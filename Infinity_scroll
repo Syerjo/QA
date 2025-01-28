@@ -1,0 +1,28 @@
+"""
+Imagine yourself as a data hacker in a virtual world where information is stored not in ordinary files but in hidden elements on web pages. To access this information, you need to use Selenium and a Python script to automate scrolling through an infinite list of elements. Your task is to collect all the numbers from these elements and sum them up.
+
+Objective:
+1. Initialization: Using Selenium, open the specified website http://parsinger.ru/infiniti_scroll_1/
+2. Scrolling: The website has a list of 100 elements that extends as you scroll (infinity scroll).
+3. Data collection: Scroll through the interactive elements to reveal all 100 items in the list. Use Keys.DOWN or methods like ActionChains(driver).
+4. Aggregation: Extract all the numerical values from these elements and sum them up.
+5. Submit the answer: Insert the calculated sum of the numbers into the designated field on the website.
+
+Hints and notes:
+- Be mindful of delays when loading the elements.
+- The last item in the list has the class `last-of-list`. Use this to break the scrolling loop.
+- Carefully examine the HTML structure of the page. This will help you understand how to locate the necessary elements.
+"""
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+
+with webdriver.Chrome() as browser:
+    browser.get('https://parsinger.ru/infiniti_scroll_1/')
+
+    div = browser.find_element(By.XPATH, '//*[@id="scroll-container"]/div')
+
+    for x in range(10):
+        ActionChains(browser).move_to_element(div).scroll_by_amount(1, 500).perform()
+
+    print(sum(int(number.text) for number in browser.find_elements(By.TAG_NAME, 'span') if number.text))
