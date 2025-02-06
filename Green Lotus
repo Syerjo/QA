@@ -1,0 +1,37 @@
+'''
+Imagine a moment when time freezes, and everything around you pauses, waiting for your action. You stand before
+four buttons, each one representing your chance to change the course of events. But in this task, it's not just about clicking—
+you have to **hold** the button. Yes, you heard it right.
+
+To complete this task, you must tame each button by holding it down until it turns green.
+The `value="N"` of each button indicates the **minimum time in seconds (float())** that you need to hold it.
+
+🔮 Once all the buttons have turned emerald green, your patience will be rewarded: an **alert message** will appear,
+containing a key to the next challenge. This key must be entered into the **Stepik** answer field to progress
+further in the course.
+
+### Task:
+1. Open the website (**https://parsinger.ru/selenium/5.7/5/index.html**) using Selenium.
+2. Find all **four buttons** on the page.
+3. Retrieve the `value` of each button. This is the time required to hold the button.
+4. Once **all buttons turn green**, an alert message will appear.
+
+### Hint:
+You will need to use methods like **ActionChains** to hold the button.
+
+# Example:
+```python
+actions.click_and_hold(button).pause(hold_time).release(button).perform()
+'''
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+
+with webdriver.Chrome() as browser:
+    browser.get('https://parsinger.ru/selenium/5.7/5/index.html')
+    buttons = browser.find_elements(By.CLASS_NAME, 'timer_button')
+
+    for x in buttons:
+        ActionChains(browser).click_and_hold(x).pause(float(x.text)).release(x).perform()
+    print(browser.switch_to.alert.text)
